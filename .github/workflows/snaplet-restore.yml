@@ -1,0 +1,66 @@
+name: Snaplet Restore
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * *' # 5 AM everyday
+
+jobs:
+  # Label of the runner job
+  snaplet-restore:
+    name: Snaplet Restore
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest # Must match the database where snapshot was taken
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: videolet
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run:  yarn install --frozen-lockfile
+
+      - name: Build
+        run:  yarn build
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.GHCR_CONTAINER_REGISTRY_SERVER }}
+          username: ${{ secrets.GHCR_CONTAINER_REGISTRY_USER }}
+          password: ${{ secrets.GHCR_CONTAINER_REGISTRY_PASSWORD }}
+
+      - name: Install Snaplet
+        run: curl -sL https://app.snaplet.dev/get-cli/ | bash
+
+      - name: Snaplet Restore
+        uses: ./
+        with:
+          docker-image-name: publish-postgres-with-data-docker-action_database
+        env:
+          SNAPLET_ACCESS_TOKEN: ${{ secrets.SNAPLET_ACCESS_TOKEN }}
+          SNAPLET_DATABASE_ID: ckq46skzy358532hraos3ptc7p
+          SNAPLET_RESTORE_DB_NAME: videolet
+          PGHOST: localhost
+          PGUSER: postgres
+          PGPASSWORD: postgres
+          PGPORT: 5432
+          PGDATABASE: videolet

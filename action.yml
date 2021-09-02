@@ -1,0 +1,11 @@
+name: Postgres Docker image with "baked-in" data
+author: Snaplet, Inc.
+description: Creates a Postgres Docker Image, with data from a Snaplet snapshot, that is published to Github's container registry for restoration in Codespaces, Staging & Development environments.
+inputs:
+  docker-image-name:
+    description: Name of docker image
+    required: false
+    default: snaplet_database
+runs:
+  using: "node12"
+  main: "dist/index.js"
