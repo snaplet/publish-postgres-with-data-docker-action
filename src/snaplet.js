@@ -3,6 +3,8 @@ const { spawnSync } = require('child_process')
 const core = require('@actions/core')
 
 async function main() {
+    const dockerContainerRegistryServer = core.getInput('docker-container-registry-server', { required: false }) // Default ghcr.io
+    const dockerContainerRegistryUser = core.getInput('docker-container-registry-user', { required: true })
     const dockerImageName = core.getInput('docker-image-name', { required: false }) // Default snaplet_database from action.yml
 
     const restoreCmd = spawnSync('snaplet', ['restore', '--no-backup', '--new'], {
@@ -34,12 +36,12 @@ async function main() {
     })
     core.info('Info: docker build ' + dockerBuildCmd.stdout + '\n' + dockerBuildCmd.stderr)
 
-    const dockerTagCmd = spawnSync('docker', ['tag', `${dockerImageName}`, `ghcr.io/snaplet/${dockerImageName}:latest`], {
+    const dockerTagCmd = spawnSync('docker', ['tag', `${dockerImageName}`, `${dockerContainerRegistryServer}/${dockerContainerRegistryUser}/${dockerImageName}:latest`], {
         encoding: 'utf-8'
     })
     core.info('Info: docker tag ' + dockerTagCmd.stdout + '\n' + dockerTagCmd.stderr)
 
-    const dockerPush = spawnSync('docker', ['push', `ghcr.io/snaplet/${dockerImageName}:latest`], {
+    const dockerPush = spawnSync('docker', ['push', `${dockerContainerRegistryServer}/${dockerContainerRegistryUser}/${dockerImageName}:latest`], {
         encoding: 'utf-8'
     })
     core.info('Info: docker push ' + dockerPush.stdout + '\n' + dockerPush.stderr)

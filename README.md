@@ -13,5 +13,14 @@ The name of the docker image tag to use. Default `"snaplet_database"`.
 ```
 uses: snaplet/publish-postgres-with-data-docker-action@main
 with:
-  docker-image-tag: snaplet_database
+  docker-container-registry-user: <docker-registry-user>
+  docker-image-tag: <docker-image-tag>
+env:
+  SNAPLET_ACCESS_TOKEN: ${{ secrets.SNAPLET_ACCESS_TOKEN }}
+  SNAPLET_DATABASE_ID: <snaplet-database-id>
+  PGHOST: localhost
+  PGUSER: postgres
+  PGPASSWORD: postgres
+  PGPORT: 5432
+  PGDATABASE: <restore-database-name>
 ```

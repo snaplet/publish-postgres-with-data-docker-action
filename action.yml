@@ -6,6 +6,13 @@ inputs:
     description: Name of docker image
     required: false
     default: snaplet_database
+  docker-container-registry-server:
+    description: URL of docker registry server
+    required: false
+    default: ghcr.io
+  docker-container-registry-user:
+    description: Name of docker registry user
+    required: true
 runs:
   using: "node12"
   main: "dist/index.js"
