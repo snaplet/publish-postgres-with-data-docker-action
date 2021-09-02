@@ -4,9 +4,17 @@ Snaplet's Github action lets your create safe database snapshots on-demand.
 
 # Inputs
 
+## `docker-container-registry-user`
+
+**required** The name of docker registry user.
+
+## `docker-container-registry-server`
+
+The URL of docker registry server. Default `ghcr.io`
+
 ## `docker-image-tag`
 
-The name of the docker image tag to use. Default `"snaplet_database"`.
+The name of the docker image tag to use. Default `snaplet_database`.
 
 ## Example usage
 
