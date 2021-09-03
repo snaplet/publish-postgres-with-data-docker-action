@@ -12,7 +12,7 @@ async function main() {
     })
     core.info('Info: snaplet restore output ' + restoreCmd.stdout + '\n' + restoreCmd.stderr)
 
-    const cleanUpExistingDataCmd = spawnSync('rm', ['-rf', './src/data'], {
+    const cleanUpExistingDataCmd = spawnSync('rm', ['-rf', './data'], {
         encoding: 'utf-8'
     })
     core.info('Info: clean up output ' + cleanUpExistingDataCmd.stdout + '\n' + cleanUpExistingDataCmd.stderr)
@@ -26,7 +26,7 @@ async function main() {
     const postgresContainerName = postgresContainerNameCmd.stdout.replace("'", '').replace("'", '').trim()
     core.info('Info: postgres container name ' + postgresContainerName)
 
-    const copyDockerDataCmd = spawnSync('docker', ['cp', `${postgresContainerName}:/var/lib/postgresql/data`, './src/data'], {
+    const copyDockerDataCmd = spawnSync('docker', ['cp', `${postgresContainerName}:/var/lib/postgresql/data`, './data'], {
         encoding: 'utf-8'
     })
     core.info('Info: copy docker data ' + copyDockerDataCmd.stdout + '\n' + copyDockerDataCmd.stderr)
