@@ -1,4 +1,4 @@
 FROM postgres:latest
 
-COPY ./data /data
+COPY ../data /data
 ENV PGDATA=/data
