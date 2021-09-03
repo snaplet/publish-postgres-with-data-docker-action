@@ -1,6 +1,8 @@
 const { spawnSync } = require('child_process')
+const fs = require('fs')
 
 const core = require('@actions/core')
+const io = require('@actions/io')
 
 async function main() {
     const dockerContainerRegistryServer = core.getInput('docker-container-registry-server', { required: false }) // Default ghcr.io
@@ -12,10 +14,7 @@ async function main() {
     })
     core.info('Info: snaplet restore output ' + restoreCmd.stdout + '\n' + restoreCmd.stderr)
 
-    const cleanUpExistingDataCmd = spawnSync('rm', ['-rf', './data'], {
-        encoding: 'utf-8'
-    })
-    core.info('Info: clean up output ' + cleanUpExistingDataCmd.stdout + '\n' + cleanUpExistingDataCmd.stderr)
+    await io.rmRF('./data')
 
     // TODO: evaluate if this (https://github.com/apocas/dockerode) is better than docker + exaca
 
@@ -31,7 +30,17 @@ async function main() {
     })
     core.info('Info: copy docker data ' + copyDockerDataCmd.stdout + '\n' + copyDockerDataCmd.stderr)
 
-    const dockerBuildCmd = spawnSync('docker', ['build', '-t', `${dockerImageName}`, './src'], {
+    const dockerFile = `
+FROM postgres:latest
+
+COPY ./data /data
+ENV PGDATA=/data`
+
+    fs.writeFileSync('./Dockerfile', dockerFile, {
+        encoding: 'utf-8'
+    })
+
+    const dockerBuildCmd = spawnSync('docker', ['build', '-t', `${dockerImageName}`, '.'], {
         encoding: 'utf-8'
     })
     core.info('Info: docker build ' + dockerBuildCmd.stdout + '\n' + dockerBuildCmd.stderr)
