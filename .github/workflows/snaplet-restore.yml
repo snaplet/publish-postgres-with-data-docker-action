@@ -44,8 +44,8 @@ jobs:
         uses: ./
         with:
           docker-image-tag: ghcr.io/snaplet/publish-postgres-with-data-docker-action_database
+          snaplet-database-url: postgres://postgres:postgres@localhost:5432/snapshot
         env:
           SNAPLET_ACCESS_TOKEN: ${{ secrets.SNAPLET_ACCESS_TOKEN }}
           SNAPLET_PROJECT_ID: ${{ secrets.SNAPLET_PROJECT_ID }}
-          SNAPLET_TARGET_DATABASE_URL: postgres://postgres:postgres@localhost:5432/snapshot
           
