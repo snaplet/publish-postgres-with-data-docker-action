@@ -16,6 +16,7 @@ jobs:
       postgres:
         image: postgres:latest # Must match the database where snapshot was taken
         env:
+          PGDATA: /data # Important: data location has to be changed as default is defined as a volume, so snapshot won't persist
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
           POSTGRES_DB: snapshot
