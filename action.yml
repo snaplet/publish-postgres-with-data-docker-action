@@ -29,6 +29,6 @@ runs:
 
     - name: Commit and push Docker image
       run: |
-        docker commit ${{ inputs.docker-container-name }} ${{ steps.registry.outputs.tag }}
-        docker push ${{ steps.registry.outputs.tag }}
+        docker commit ${{ inputs.docker-container-name }} ${{ inputs.docker-container-tag }}
+        docker push ${{ inputs.docker-container-tag }}
       shell: bash
