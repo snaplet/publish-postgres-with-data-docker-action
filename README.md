@@ -4,6 +4,10 @@ Snaplet's Github action lets your create safe database snapshots on-demand.
 
 # Inputs
 
+## `docker-container-name`
+
+Optional name of the docker container running the database. By default this countainer is found with a port number from the database URL below.
+
 ## `docker-image-tag`
 
 **required** A tag to apply and push the image with. Must be fully qualified including registry URL e.g. `ghcr.io/snaplet/snaplet-snapshot:latest`.
