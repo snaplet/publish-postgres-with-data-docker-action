@@ -10,7 +10,7 @@ Snaplet's Github action lets your create safe database snapshots on-demand.
 
 ## `snaplet-database-url`
 
-**required** A connection string to database instance. You have to have a container running as a service, see example workflow in `.github/workflows/snaplet-restore.yml`.
+**required** A connection string to database instance. You have to have a database container running as a service, see example workflow in `.github/workflows/snaplet-restore.yml`.
 
 ## `snaplet-restore-command`
 
