@@ -4,10 +4,12 @@ description: Creates a Postgres Docker Image, with data from a Snaplet snapshot,
 inputs:
   docker-container-name:
     description: Name of docker database container
-    required: false
-  docker-image-tag:
-    description: Name of docker image
     required: true
+    type: string
+  docker-image-tag:
+    description: Tag for docker image
+    required: true
+    type: string
   snaplet-database-url:
     description: Connection string to restore a snapshot
     required: true
@@ -34,10 +36,6 @@ runs:
 
     - name: Commit and push Docker image
       run: |
-        CONTAINER_PORT=$(echo "${{ inputs.snaplet-database-url }}" | sed 's/.*:\([0-9]*\)\/.*/\1/;s/^$/5432/')
-        CONTAINER_ID=$(docker ps -f publish=$CONTAINER_PORT --format {{.ID}})
-        CONTAINER_NAME=${{ inputs.docker-container-name }}
-        CONTAINER=${DOCKER_CONTAINER_NAME:-$CONTAINER_ID}
-        docker commit $CONTAINER ${{ inputs.docker-container-tag }}
+        docker commit ${{ inputs.docker-container-name }} ${{ inputs.docker-container-tag }}
         docker push ${{ inputs.docker-container-tag }}
       shell: bash

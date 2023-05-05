@@ -1,12 +1,13 @@
 # Introduction
 
-Snaplet's Github action lets your create safe database snapshots on-demand.
+This action lets your restore a Snaplet snapshot into a Docker container and push it to your registry for later use.
+To use it you need to create a workflow with a service container running a database. This container will be populated with data and pushed to a registry.
 
 # Inputs
 
 ## `docker-container-name`
 
-Optional name of the docker container running the database. By default this countainer is found with a port number from the database URL below.
+**required** Name of the docker container running the database.
 
 ## `docker-image-tag`
 
@@ -14,7 +15,7 @@ Optional name of the docker container running the database. By default this coun
 
 ## `snaplet-database-url`
 
-**required** A connection string to database instance. You have to have a database container running as a service, see example workflow in `.github/workflows/snaplet-restore.yml`.
+**required** A connection string to use to restore a snapshot.
 
 ## `snaplet-restore-command`
 

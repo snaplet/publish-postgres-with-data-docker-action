@@ -43,6 +43,7 @@ jobs:
       - name: Snaplet Restore
         uses: ./
         with:
+          docker-container-name: snapshot
           docker-image-tag: ghcr.io/snaplet/publish-postgres-with-data-docker-action_database
           snaplet-database-url: postgres://postgres:postgres@localhost:5432/snapshot
         env:
