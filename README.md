@@ -1,34 +1,26 @@
 # Introduction
 
-Snaplet's Github action lets your create safe database snapshots on-demand.
+This action lets your restore a Snaplet snapshot into a Docker container and push it to your registry for later use.
+To use it you need to create a workflow with a service container running a database. This container will be populated with data and pushed to a registry.
 
 # Inputs
 
-## `docker-container-registry-user`
+## `docker-container-name`
 
-**required** The name of docker registry user.
-
-## `docker-container-registry-server`
-
-The URL of docker registry server. Default `ghcr.io`
+**required** Name of the docker container running the database.
 
 ## `docker-image-tag`
 
-The name of the docker image tag to use. Default `snaplet_database`.
+**required** A tag to apply and push the image with. Must be fully qualified including registry URL e.g. `ghcr.io/snaplet/snaplet-snapshot:latest`.
+
+## `snaplet-database-url`
+
+**required** A connection string to use to restore a snapshot.
+
+## `snaplet-restore-command`
+
+A command to run to restore a snapshot. Default `snaplet snapshot restore --latest`.
 
 ## Example usage
 
-```
-uses: snaplet/publish-postgres-with-data-docker-action@main
-with:
-  docker-container-registry-user: <docker-registry-user>
-  docker-image-tag: <docker-image-tag>
-env:
-  SNAPLET_ACCESS_TOKEN: ${{ secrets.SNAPLET_ACCESS_TOKEN }}
-  SNAPLET_DATABASE_ID: <snaplet-database-id>
-  PGHOST: localhost
-  PGUSER: postgres
-  PGPASSWORD: postgres
-  PGPORT: 5432
-  PGDATABASE: <restore-database-name>
-```
+Apart from inputs this action expects standard Snaplet environment variables to authenticate the CLI. See example workflow in `.github/workflows/snaplet-restore.yml`.
